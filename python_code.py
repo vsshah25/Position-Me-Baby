@@ -10,6 +10,9 @@ white = (255,255,255)
 green = (0,255,0)
 red = (255,0,0)
 blue = (0,0,255)
+circle_color=[(255,0,0),(0,0,255),(255,0,255),(128,180,200)]          # some random colors for four circles
+count=0
+
 
 display_surface = pygame.display.set_mode((window_width,window_height),0,32)
 display_surface.fill(white)
@@ -19,7 +22,6 @@ myfont = pygame.font.SysFont("monospace", 20)
 class Transmitter:
 	def __init__(self, trans_id):
 		self.trans_id = trans_id
-		#self.serial=serial.Serial('/dev/ttyACM0')
 	
 	def draw(self):
 		self.x = 450 - 450*int(bool(self.trans_id %2!=0))
@@ -37,12 +39,13 @@ class Transmitter:
 			for i in range(0,5):
 				self.serial.write(self.trans_id)
 			
-	def receive_serial(self):
-		r_data  = self.serial.read()
-		self.time = r_data
+	def receive_serial(self,r_data):
+		self.time = r_data[time]
 		print(self.time)
-		self.radius = (time/1000)*340 
-		pygame.draw.circle(display_surface, blue, (25*a + 475*b, 475*c + 25*d), self.radius, 1)
+		self.radius = (self.time/1000)*340
+		self.x_center=25+int(bool(trans_id%2 ==0))*450
+        self.y_center=25+int(bool(trans_id>3))*450
+		pygame.draw.circle(display_surface, circle_color[trans_id],(self.x_center, self.y_center), self.radius, 1)
                                              
 trans_1  = Transmitter(1)
 trans_2  = Transmitter(2)
@@ -63,12 +66,29 @@ serialReceiver = serial.Serial(
     bytesize=serial.SEVENBITS
 )
 
+trans_id=[trans_1,trans_2,trans_3,trans_4]
+
 #main loop 
 while True:
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
+<<<<<<< HEAD
                               	while serialReceiver.inWaiting() > 0 and serialReceiver.isOpen():receive_serialreceive_serial
 
+=======
+			sys.exit()
+	# An interrupt should be there which at a constant duration  checks whether 
+	# it has received data from the receiver object
+	while serialReceiver.inWaiting() > 0 and serialReceiver.isOpen():
+		r_data=serialReceiver.read()                    # r_data will be an array containing time and trans_id
+		global count
+		count=(count)%4+1
+		trans_id[count].receive_serial(r_data)
+   		pygame.display.update()
+>>>>>>> 03c13df3beeed17ce596aed658ae0fb07d2f4f4a
 
-	pygame.display.update()
+   	for i in trans_id:
+   		shade_common_region(i,j)                         # i and j are trans_id objects
+	
+   	pygame.display.update()
