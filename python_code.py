@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import sys,os
 import serial
+import common_region
 
 pygame.init()
 window_width = 500
@@ -22,6 +23,9 @@ myfont = pygame.font.SysFont("monospace", 20)
 class Transmitter:
 	def __init__(self, trans_id):
 		self.trans_id = trans_id
+		self.x_center=0
+		self.y_center=0
+		self.radius=0
 	
 	def draw(self):
 		self.x = 450 - 450*int(bool(self.trans_id %2!=0))
@@ -74,15 +78,22 @@ while True:
 		if event.type == QUIT:
 			pygame.quit()
 			sys.exit()
-	# An interrupt should be there which at a constant duration  checks whether 
+
+	# An function should be there which in every loop checks whether 
 	# it has received data from the receiver object
+
 	while serialReceiver.inWaiting() > 0 and serialReceiver.isOpen():
-		r_data=serialReceiver.read()                    # r_data will be an array containing time and trans_id
+		r_data=serialReceiver.read()                 
 		global count
 		count=(count)%4+1
 		trans_id[count].receive_serial(r_data)
    		pygame.display.update()
 
+
+
+
+   		getCommonRegion(trans_id)
+   	    
 
 	
    	pygame.display.update()

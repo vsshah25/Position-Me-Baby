@@ -17,7 +17,6 @@ void loop()
   time = millis();
 }
 
-
 void send_data()
 {	
 	Serial.write(time);
