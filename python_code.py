@@ -68,10 +68,7 @@ while True:
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
-			sys.exit()
-	# An interrupt should be there which at a constant duration  checks whather 
-	# it has received data from the receiver object
-	while serialReceiver.inWaiting() > 0 and serialReceiver.isOpen():
-        output += serialReceiver.read(1)
+                              	while serialReceiver.inWaiting() > 0 and serialReceiver.isOpen():receive_serialreceive_serial
+
 
 	pygame.display.update()
