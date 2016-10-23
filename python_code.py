@@ -73,10 +73,6 @@ while True:
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
-<<<<<<< HEAD
-                              	while serialReceiver.inWaiting() > 0 and serialReceiver.isOpen():receive_serialreceive_serial
-
-=======
 			sys.exit()
 	# An interrupt should be there which at a constant duration  checks whether 
 	# it has received data from the receiver object
@@ -86,7 +82,6 @@ while True:
 		count=(count)%4+1
 		trans_id[count].receive_serial(r_data)
    		pygame.display.update()
->>>>>>> 03c13df3beeed17ce596aed658ae0fb07d2f4f4a
 
    	for i in trans_id:
    		shade_common_region(i,j)                         # i and j are trans_id objects
