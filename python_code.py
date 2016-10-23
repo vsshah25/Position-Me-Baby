@@ -54,9 +54,24 @@ trans_2.draw()
 trans_3.draw()
 trans_4.draw()
 
+# configuring the serial receiver that recives from the target object
+serialReceiver = serial.Serial(
+    port='/dev/ttyACM0',
+    baudrate=9600,
+    parity=serial.PARITY_ODD,
+    stopbits=serial.STOPBITS_TWO,
+    bytesize=serial.SEVENBITS
+)
+
+#main loop 
 while True:
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
 			sys.exit()
+	# An interrupt should be there which at a constant duration  checks whather 
+	# it has received data from the receiver object
+	while serialReceiver.inWaiting() > 0 and serialReceiver.isOpen():
+        output += serialReceiver.read(1)
+
 	pygame.display.update()
