@@ -83,7 +83,6 @@ while True:
 		trans_id[count].receive_serial(r_data)
    		pygame.display.update()
 
-   	for i in trans_id:
-   		shade_common_region(i,j)                         # i and j are trans_id objects
+
 	
    	pygame.display.update()
