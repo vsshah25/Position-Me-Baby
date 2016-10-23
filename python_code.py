@@ -50,7 +50,7 @@ class transmitter:
 		self.time = r_data
 		print(self.time)
 		self.radius = (time/1000)*340 
-		pygame.draw.circle(display_surSface, blue, (25*a + 475*b, 475*c + 25*d), self.radius, 1)                                                  
+		pygame.draw.circle(display_surface, blue, (25*a + 475*b, 475*c + 25*d), self.radius, 1)                                                  
 				
 
 
