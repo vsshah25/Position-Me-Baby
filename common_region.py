@@ -31,6 +31,4 @@ def getCommonRegion(trans_id):
 
 			else:
 				# No common Region
-
-
-
+				pass
