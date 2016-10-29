@@ -1,23 +1,25 @@
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(10, 11); // RX, TX
 
-time = 0;
-const byte interrupt_pin = 2;
+long int time = 0;
+int interrupt_pin = 2;
 
 void setup()
 {
-  pinMode(receiver,INPUT);
   Serial.begin(9600);
-  pinMode(interruptPin, INPUT);
-  attachInterrupt(digitalPinToInterrupt(interrupt_pin), send_data, HIGH);
+  pinMode(interrupt_pin, INPUT);
+  //attachInterrupt(interrupt_pin, send_data, HIGH);
 }
 
 void loop()
 {
   time = millis();
+  //Serial.println(digitalRead(2));
+  if(digitalRead(2) == 1) 
+  {
+    mySerial.write(time);
+    Serial.println(time);
+  }
 }
 
-void send_data()
-{	
-	Serial.write(time);
-}
+
