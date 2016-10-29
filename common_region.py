@@ -24,11 +24,10 @@ def getCommonRegion(trans_id):
 				xr1=(k-yr1*(y2-y1))/(x2-x1)
 				xr2=(k-yr2*(y2-y1))/(x2-x1)
 
-				
-
 			elif center_d==r1+r2:
 				pygame.draw.line(display_surf,(0,0,0),(x1+x2)/2,(y1+y2)/2)
 
 			else:
+				print 'Yp'
 				# No common Region
 				pass
