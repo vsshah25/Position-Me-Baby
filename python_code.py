@@ -14,7 +14,6 @@ blue = (0,0,255)
 circle_color=[(255,0,0),(0,0,255),(255,0,255),(128,180,200)]          # some random colors for four circles
 count=0
 
-
 display_surface = pygame.display.set_mode((window_width,window_height),0,32)
 display_surface.fill(white)
 pygame.display.set_caption("map_69")
@@ -22,7 +21,7 @@ myfont = pygame.font.SysFont("monospace", 20)
 		
 class Transmitter:
 	def __init__(self, trans_id):
-		self.trans_id = trans_id
+		#self.trans_id = trans_id
 		self.x_center=0
 		self.y_center=0
 		self.radius=0
@@ -47,9 +46,9 @@ class Transmitter:
 		self.time = r_data[time]
 		print(self.time)
 		self.radius = (self.time/1000)*340
-		self.x_center=25+int(bool(trans_id%2 ==0))*450
-        self.y_center=25+int(bool(trans_id>3))*450
-		pygame.draw.circle(display_surface, circle_color[trans_id],(self.x_center, self.y_center), self.radius, 1)
+		self.x_center=25+int(bool(self.trans_id%2 ==0))*450
+        self.y_center=25+int(bool(self.trans_id>3))*450
+        pygame.draw.circle(display_surface, circle_color[self.trans_id],self.x_center,self.y_center,self.radius,1)
                                              
 trans_1  = Transmitter(1)
 trans_2  = Transmitter(2)
@@ -85,7 +84,7 @@ while True:
 	while serialReceiver.inWaiting() > 0 and serialReceiver.isOpen():
 		r_data=serialReceiver.read()                 
 		global count
-		count=(count)%4+1
+		count=((count)%4)+1
 		trans_id[count].receive_serial(r_data)
    		pygame.display.update()
 
