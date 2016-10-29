@@ -87,8 +87,5 @@ while True:
 		count=((count)%4)+1
 		trans_id[count].receive_serial(r_data)
    		pygame.display.update()
-
    		getCommonRegion(trans_id)
-   	    
-	
    	pygame.display.update()
