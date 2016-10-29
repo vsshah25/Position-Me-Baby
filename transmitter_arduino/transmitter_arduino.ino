@@ -12,10 +12,10 @@ int trans_3_r = 7;
 int trans_4_t = 8;
 int trans_4_r = 9;
 
-time = 0;
-freq = 0;
-pulse_width = 0;
-time_diff = 0;
+float time = 0;
+float freq = 40000;      //in Hz
+float pulse_width = 0;
+float time_diff = 20;
 
 void setup()
 {
@@ -32,7 +32,7 @@ void loop()
     //use interrupt to continuously check the value of time;
     send_signal(trans_1_t,trans_1_r);
     delay(time_diff);
-    
+    /*
     send_signal(trans_1_t,trans_1_r);
     delay(time_diff);
     
@@ -41,14 +41,15 @@ void loop()
     
     send_signal(trans_1_t,trans_1_r);
     delay(time_diff);  
+    */
 }
 
-void send_signal(pin1, pin2)
+void send_signal(int pin1, int pin2)
 {  
   digitalWrite(pin1,HIGH);
   digitalWrite(pin2,LOW);
-  delay(1/freq);
+  delay(1000/freq);
   digitalWrite(pin1,LOW);
   digitalWrite(pin2,HIGH);
-  delay(1/freq);
+  delay(1000/freq);
 }
