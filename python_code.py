@@ -67,25 +67,22 @@ serialReceiver = serial.Serial(
     baudrate=9600,
     parity=serial.PARITY_ODD,
     stopbits=serial.STOPBITS_TWO,
-    bytesize=serial.SEVENBITS
+    bytesize=serial.SIXBITS
 )
 
 trans_id=[trans_1,trans_2,trans_3,trans_4]
 
-#main loop 
+# main loop 
 while True:
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
 			sys.exit()
 
-	# An function should be there which in every loop checks whether 
-	# it has received data from the receiver object
-
 	while serialReceiver.inWaiting() > 0 and serialReceiver.isOpen():
 		r_data=serialReceiver.read()                 
 		count=((count)%4)+1
 		trans_id[count].receive_serial(r_data)
    		pygame.display.update()
-   		getCommonRegion(trans_id)
+   		getCommonRegion(trans_id,display_surface)
    	pygame.display.update()
