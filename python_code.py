@@ -47,6 +47,9 @@ class Transmitter:
 		self.time = r_data[time]
 		print(self.time)
 		self.radius = (self.time/1000)*340
+
+		exp_1 =  int(bool(self.trans_id%2 ==0)) 
+		exp_2 = int(bool(self.trans_id>3))
 		self.x_center=25+int(bool(self.trans_id%2 ==0))*450
 		self.y_center=25+int(bool(self.trans_id > 3))*450
 		pygame.draw.circle(display_surface, circle_color[self.trans_id],self.x_center,self.y_center,self.radius,1)
