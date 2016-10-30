@@ -1,8 +1,7 @@
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(10, 11); // RX, TX
 
-long int time = 0;
-int interrupt_pin = 2;
+long long int time = 0;
 
 void setup()
 {
