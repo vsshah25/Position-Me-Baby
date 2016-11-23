@@ -66,7 +66,7 @@ trans_4.draw()
 
 # configuring the serial receiver that recives from the target object
 serialReceiver = serial.Serial(
-    port='/dev/ttyACM0',
+    port='/dev/ttyACM1',
     baudrate=9600,
     parity=serial.PARITY_ODD,
     stopbits=serial.STOPBITS_TWO,
