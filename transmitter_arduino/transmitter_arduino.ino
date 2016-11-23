@@ -24,14 +24,21 @@ void setup()
    pinMode(4,OUTPUT);
    pinMode(5,OUTPUT);
    Serial.begin(9600);
-}
+   Serial.write("c");
+ }
 
 void loop()
 {
+    
     time = millis();
-    //use interrupt to continuously check the value of time;
+    Serial.print(time);
+    Serial.print('a');
     send_signal(trans_1_t,trans_1_r);
+    //time_1 =  millis();
     delay(time_diff);
+    
+    
+     
     /*
     send_signal(trans_1_t,trans_1_r);
     delay(time_diff);
@@ -42,6 +49,7 @@ void loop()
     send_signal(trans_1_t,trans_1_r);
     delay(time_diff);  
     */
+    
 }
 
 void send_signal(int pin1, int pin2)
