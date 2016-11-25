@@ -1,16 +1,16 @@
 //Continously run the transmitters
 
-int trans_1_t = 2;
-int trans_1_r = 3;
+int trans_1_push = 2;
+int trans_1_pull = 3;
 
-int trans_2_t = 4;
-int trans_2_r = 5;
+int trans_2_push = 4;
+int trans_2_pull = 5;
 
-int trans_3_t = 6;
-int trans_3_r = 7;
+int trans_3_push = 6;
+int trans_3_pull = 7;
 
-int trans_4_t = 8;
-int trans_4_r = 9;
+int trans_4_push = 8;
+int trans_4_pull = 9;
 
 float time = 0;
 float freq = 40000;      //in Hz
@@ -32,23 +32,34 @@ void loop()
     
     time = millis();
     Serial.print(time);
-    Serial.print('a');
-    send_signal(trans_1_t,trans_1_r);
-    //time_1 =  millis();
+    Serial.print('a');                                 //special char
+    send_signal(trans_1_push,trans_1_pull);
+
+    delay(time_diff);
+    
+    time = millis();
+    Serial.print(time);
+    Serial.print('a');                                 //special char
+    send_signal(trans_2_push,trans_2_pull);
+
+    delay(time_diff);
+    
+    time = millis();
+    Serial.print(time);
+    Serial.print('a');                                 //special char
+    send_signal(trans_3_push,trans_3_pull);
+
+    delay(time_diff);
+    
+    time = millis();
+    Serial.print(time);
+    Serial.print('a');                                 //special char
+    send_signal(trans_4_push,trans_4_pull);
+
     delay(time_diff);
     
     
-     
-    /*
-    send_signal(trans_1_t,trans_1_r);
-    delay(time_diff);
-    
-    send_signal(trans_1_t,trans_1_r);
-    delay(time_diff);
-    
-    send_signal(trans_1_t,trans_1_r);
-    delay(time_diff);  
-    */
+
     
 }
 
