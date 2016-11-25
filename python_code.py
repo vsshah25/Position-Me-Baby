@@ -3,6 +3,7 @@ from pygame.locals import *
 import sys,os
 import serial
 import common_region
+import time
 
 pygame.init()
 window_width = 500
@@ -12,9 +13,11 @@ green = (0,255,0)
 red = (255,0,0)
 blue = (0,0,255)
 circle_color=[(255,0,0),(0,0,255),(255,0,255),(128,180,200)]          # some random colors for four circles
-global count
-count=0
+global count1
+global count2
 
+count1=0
+count2=0
 display_surface = pygame.display.set_mode((window_width,window_height),0,32)
 display_surface.fill(white)
 pygame.display.set_caption("map_69")
@@ -43,7 +46,7 @@ class Transmitter:
 			for i in range(0,5):
 				self.serial.write(self.trans_id)
 			
-	def receive_serial(self,r_data):
+	def receive_and_draw(self,r_data):
 		self.time = r_data[time]
 		print(self.time)
 		self.radius = (self.time/1000)*340
@@ -82,10 +85,29 @@ while True:
 			pygame.quit()
 			sys.exit()
 
-	while serialReceiver.inWaiting() > 0 and serialReceiver.isOpen():
-		r_data=serialReceiver.read()                 
-		count=((count)%4)+1
-		trans_id[count].receive_serial(r_data)
+	while serialReceiver.inWaiting() > 0:                 #and serialReceiver.isOpen():
+		r_data=serialReceiver.read()
+		r_data_string = str(r_data)
+		if r_data_string == 'c':
+			starting_time=time.time()
+			serialReceiver.write('c')
+		if r_data_string == '!':
+			print(val)
+			if count1%2==0:
+				transmitted_time=time.time()-starting_time            # transmitted_time will be in seconds
+			else:
+				received_time=time.time()-starting_time               # received_time will be in milliseconds
+				delta_t=(received_time*1000)-transmitted_time
+				distance=(delta_t)*340
+				print(str(distance))
+			val = ''
+			count1+=1
+
+		else:
+			val = val + r_data_string
+
+		count2=((count2)%4)+1
+		trans_id[count2].receive_serial(r_data)
    		pygame.display.update()
    		getCommonRegion(trans_id,display_surface)
    	pygame.display.update()
