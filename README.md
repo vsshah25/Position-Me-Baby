@@ -1,6 +1,7 @@
 Hello :smiley:
 
-As clear from the name of repo we are trying to achieve localisation of an object in a particular area. 
+We are aiming to localise an object in a closed room of given dimensions. Technically speaking, we are trying to get the co-ordinates of an object w.r.t the room. 
+
 
 Our setup :
 
@@ -20,5 +21,11 @@ Thus for the transmitter, the reciever must be on one of the point of the circle
 
 </br>
 
-The intersection of circles localises the object. The accuracy getting better with increasing the number of transmitters. (Proposition)
+The intersection of circles localises the object. The accuracy getting better with increasing the number of transmitters. 
+
+</br>
+
+using laser sensors and odometry to get the distance. 
+
+
 
