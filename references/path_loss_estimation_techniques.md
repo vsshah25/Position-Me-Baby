@@ -37,4 +37,4 @@ There are two methods to estimate the path loss exponent:
 - Another method is to directly update the environmental parameters using gradient decent technique. In this case, measurement of received power can be done in spread and random style as long as the exact locations in the area are known. This method is called online-update measurement as the environmental parameters such as path loss exponent can
 be updated continuously regardless of the change of environment.
 
-For further details [click here]("")
+For further details [click here]("https://github.com/pranav1001/Position-Me-Baby/blob/master/references/reference_articles/path_loss_exponent_estimation.pdf")
