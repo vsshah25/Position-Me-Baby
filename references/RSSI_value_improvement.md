@@ -51,3 +51,4 @@ They are:
 For details on individual techniques [click here]("https://github.com/pranav1001/Position-Me-Baby/blob/master/references/reference_articles/fading_reduction_technique.pdf")
 
 [Click here]("https://github.com/pranav1001/Position-Me-Baby/blob/master/references/reference_articles/reduce_ISI_effects.pdf") for an article on removal of fast fading effect using artificial neural networks. 
+

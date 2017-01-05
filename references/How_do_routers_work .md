@@ -37,7 +37,8 @@ Routers also have default gateways so that if they don’t know where the destin
 </br>
 
 - DHCP (Dynamic Host Configuration Protocol)
-ALl these networking parameters discussed above need to be assigned by someone to our PC. But I don't think anyone of us has ever done that coz this is automatically configured when your PC boots up by a process known as DHCP.  
+ALl these networking parameters discussed above need to be assigned by someone to our PC. But I don't think anyone of us has ever done that coz this is automatically configured when your PC boots up by a process known as DHCP.
+But there might be situations when your computer's dhcp is disabled (might be done by you or by some system settings) and then u have to manually configure the IP address, subnet mask and other details related to the network which you want to connect to.
 
 </br>
 Basically all it does is to assign out all the corect IP information to computers automatically so everything is configured to work on that network without user input.
