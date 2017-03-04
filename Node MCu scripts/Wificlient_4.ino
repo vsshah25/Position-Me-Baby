@@ -8,9 +8,10 @@ const char *password = "devsak49";
 
 const uint16_t UDP_LOCAL_PORT =  8050;
 const uint16_t UDP_REMOTE_PORT = 8051;        // Must match UDP_REMOTE_PORT on receiver
-const char UDP_REMOTE_HOST[] =   "192.168.0.124";
 
-char TRIGGER_STRING[] = "node_1";           // Must match TRIGGER_STRING on receiver
+const char UDP_REMOTE_HOST[] = "192.168.0.124";  // ip address of the server(receiver)
+                                                // has to be put here
+char TRIGGER_STRING[] = "3_";           // Must match TRIGGER_STRING on receiver
 
 void setup() {
   // put your setup code here, to run once:
@@ -52,25 +53,24 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  String rssi = String(WiFi.RSSI());
-  //int rssi = WiFi.RSSI();
-  char TRIGGER_STRING[3];
-  for(int i = 0; i!=3; i++){
-    TRIGGER_STRING[i] = rssi[i];
+
+  char packet_to_send[15] = "3_";
+  long rssi = WiFi.RSSI();
+
+  String rssi_string = String(rssi);
+  for(int i = 2; i<2+length(rssi_string);i++){
+    packet_to_send[i] = rssi_string[i-2];
   }
-  //Serial.println(String(TRIGGER_STRING));
-  // put your main code here, to run repeatedly:
-  //char rssi[] = "Saqib";
+  packet_to_send[i] = '\0';     // put the last character of the packet as null character
 
   pinMode(2, LOW);
   delay(1000);
   Serial.println("PROGRAM: sending rssi data");
+  
   UDP.beginPacket(UDP_REMOTE_HOST, UDP_REMOTE_PORT);
-  UDP.write(TRIGGER_STRING);
-
+  UDP.write(packet_to_send);
   UDP.endPacket();
 
-  pinMode(2, HIGH);
-  delay(1000);
-
+  pinMode(2, HIGH);   // when the data is completely sent light on an led(2) for 1 sec
+  delay(5000);    // wait after sending, for all the four nodes to send data(cyclic order)
 }
