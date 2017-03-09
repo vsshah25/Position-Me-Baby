@@ -87,8 +87,9 @@ if(cap.isOpened()==False):
 
 while (cap.isOpened()):
 
+	flag = 0 
 	(grabbed, frame) = cap.read()
-	cv2.imshow("first_frame",frame)
+	#cv2.imshow("first_frame",frame)
 
 	# # convert the resized image to grayscale, blur it slightly,
 	# # and threshold it
@@ -113,12 +114,12 @@ while (cap.isOpened()):
 	(_,cnts, khai) = cv2.findContours(mod_mask, cv2.RETR_EXTERNAL,
 		cv2.CHAIN_APPROX_SIMPLE)
 
-	print len(cnts)
+	#print len(cnts)
 	for c in cnts:
 
 		if cv2.contourArea(c) < 800:                               #calibrate  
 			continue
-		print cv2.contourArea(c)
+		#print cv2.contourArea(c)
 		(x, y, w, h) = cv2.boundingRect(c)        
 		# rects.append((x, y, w, h))
 		
@@ -129,21 +130,17 @@ while (cap.isOpened()):
 	output = cv2.bitwise_and(frame, frame, mask = mod_mask)
 		# show the images
 	cv2.imshow("images", np.hstack([frame, output]))	
-	print x,y,w,h
+	#print x,y,w,h
+	roi = np.array(frame,'uint8')
 	if x > 0 and y > 0 and w > 0 and h  > 0 :  
-		roi = frame[y-10:y+h+10, x-10:x+w+10]
-		cv2.imshow("crop",roi )
+		roi = frame[y:y+h, x:x+w]
 		flag = 1 
 
-	key = cv2.waitKey(1) & 0xFF
-	if key == ord("q"):
-		break	
-
-
-
+	cv2.imshow("crop",roi )	
 #----------------------------------------------------------------------------------------------------------
 									#Detect shapes 
 
+	
 	#resized = imutils.resize(frame, width=300)
 	ratio = 1#frame.shape[0] / float(resized.shape[0])
 	 
@@ -177,15 +174,17 @@ while (cap.isOpened()):
 			c *= ratio
 			c = c.astype("int")
 			if shape == "rectangle" or shape == "square" :
-				print "rect detected"
-			cv2.drawContours(roi, [c], -1, (0, 255, 0), 2)
-			cv2.putText(roi, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
-				0.5, (255, 255, 255), 2)
-			cv2.imshow("Image", roi)
+					#print "rect detected"
+				flag = 2 
+				cv2.drawContours(roi, [c], -1, (0, 255, 0), 2)
+				cv2.putText(roi, shape, (cX, cY), cv2.FONT_HERSHEY_SIMPLEX,
+					0.5, (255, 255, 255), 2)
+				cv2.imshow("Image", roi)
+			print flag 	
 	key = cv2.waitKey(1) & 0xFF
 	if key == ord("q"):
 		break
-	 	
+
 		# show the output image
 #----------------------------------------------------------------------------------------------------------
 #						                Detect Movements
