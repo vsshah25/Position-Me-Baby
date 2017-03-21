@@ -5,9 +5,9 @@ WiFiUDP UDP;
 
 #define UDP_TX_PACKET_MAX_SIZE 5
 
-const char *ssid = "Tinkerers' Lab";
+const char *ssid = "TP-LINK_E20E12";
 //const char ldap_id = "150070031";
-const char *password = "tinker@tl";
+const char *password = "12976225";
 
 const uint16_t UDP_LOCAL_PORT =  8051;
 

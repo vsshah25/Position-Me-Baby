@@ -3,14 +3,14 @@
 
 WiFiUDP UDP;
 
-const char *ssid = "Tinkerers' Lab";
+const char *ssid = "TP-LINK_E20E12";
 //const char ldap_id = "150070031";
-const char *password = "tinker@tl";
+const char *password = "12976225";
 
 const uint16_t UDP_LOCAL_PORT =  8050;
 const uint16_t UDP_REMOTE_PORT = 8051;        // Must match UDP_REMOTE_PORT on receiver
 
-const char UDP_REMOTE_HOST[] = "192.168.0.128";  // ip address of the server(receiver)
+const char UDP_REMOTE_HOST[] = "192.168.0.107";  // ip address of the server(receiver)
                                                 // has to be put here
 char TRIGGER_STRING[] = "0_";           // Must match TRIGGER_STRING on receiver
 
@@ -57,7 +57,7 @@ void loop() {
 
   char packet_to_send[15] = "0_";
   long rssi = WiFi.RSSI();
-
+  
   String rssi_string = String(rssi);
   int i;
   //Serial.println(rssi_string);
