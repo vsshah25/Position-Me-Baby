@@ -3,11 +3,11 @@
 
 WiFiUDP UDP;
 
-#define UDP_TX_PACKET_MAX_SIZE 5
+#define UDP_TX_PACKET_MAX_SIZE 6
 
-const char *ssid = "TP-LINK_E20E12";
-//const char ldap_id = "150070031";
-const char *password = "12976225";
+const char *ssid = "lps";
+
+const char *password = "positionme";
 
 const uint16_t UDP_LOCAL_PORT =  8051;
 
@@ -27,8 +27,8 @@ void setup() {
   Serial.begin(115200);
   delay(10);
 
-  Serial.println();
-  Serial.println();
+  //Serial.println();
+  //Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
  
@@ -92,9 +92,18 @@ void loop() {
     Serial.print('(');
       Serial.print(packetBuffer[0]);
       Serial.print(',');
-      Serial.print(packetBuffer[2]);
-      Serial.print(packetBuffer[3]);
-      Serial.print(packetBuffer[4]);
+      int count = 0;
+      for(int i=2;packetBuffer[i]!='\0';i++){
+        count++;
+      }
+      Serial.print(packetBuffer[2]);   // print -ve symbol
+      if(count == 3){
+        Serial.print('0');
+      }
+      for(int i=3; packetBuffer[i]!='\0';i++){
+        Serial.print(packetBuffer[i]);
+      }
+      
       Serial.println(')');
 
     // code for synthesizing packet to send
