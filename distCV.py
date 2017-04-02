@@ -28,7 +28,8 @@ boundaries = [
 
 #--------------------------------------------------------------------------------------------------------
 if args.get("video", None) is None:
-    cap = cv2.VideoCapture(-1)
+    cap = cv2.VideoCapture(-c
+    	1)
     time.sleep(0.25)
  
 # otherwise, we are reading from a video file
