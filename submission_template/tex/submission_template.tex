@@ -1,0 +1,64 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+
+%
+% Title.
+\title{LOCAL POSITIONING SYSTEM}
+% Author
+\author{
+Pranav Sankhe 1500700
+\\ Saqib Azim 150070031
+\\ Ritik Madan 15D0700
+\\ Tanya Choudhary 150070033
+}
+
+% begin the document.
+\begin{document}
+
+% make a title page.
+\maketitle
+
+% section 1: overview.
+\section{Abstract}
+We present here the detailed design for a WIFI based positioning system called the Local Positioning System (LPS). This system is designed to work indoors, where the microwave radio signals of the Global Positioning System (GPS) cannot be received.Potential applications for this system range from asset tracking, security, and human-computer interface, to robot navigation and the management of services as diverse as medical care and postal delivery. I first present the issues surrounding its conceptual design and then describe in detail the component level implementation of the prototype LPS system, which we have designed and built but not yet tested as a whole.
+
+Our problem statement which precisely describes the problem which we are aiming to tackle goes as follows: 
+\textbf{To design a system which is able to return the coordinates of an object in a given map (size ~100 m*100 m) with accuracy in cms. The solution must be inexpensive and easy to calibrate.}
+
+% section 2: setup/approach.
+\section{Motivation}
+
+The location of people and objects relative to their environment is a crucial piece of information for asset tracking, security, and human-computer interface (HCI) applications. These applications may be as simple as tracking the location of a valuable shipping carton or detecting the theft of a laptop computer, or as complex as helping someone to find his or her way around an unfamiliar building. Other applications include the optimization of services such as medical care or postal delivery. Current technologies, such as GPS or differential GPS, can help to solve this problem as long as the people or objects to be tracked are outdoors, where the signals from the 24 orbiting GPS satellites may be received, but there is a latent demand for a similar system that works indoors, where the physics of radio propagation rules out the reception of GPS’s weak microwave signals.
+We had once worked on a traffic management system for which the position of the vehicles was an important input for the system to make a decision. It was here where we found out lack of an efficient and an accurate indoor positioning system. 
+
+\subsection{GPS Technology}
+Signal processing, computation technology, and space science have advanced considerably over the past 50 years. GPS depends on the use of orbiting space-based atomic  A Phase Measurement Radio Positioning System for Indoor Use Reynolds 8 clocks, spread spectrum microwave radios, high speed digital signal processing (DSP), and sophisticated mathematics including algorithms that compensate for general relativity. The initial design and deployment of GPS for military use by the Department of
+Defense in the 1980s has led to the availability of inexpensive commercial GPS receivers in the 1990s. In 1998, a consumer GPS receiver fits in the palm of a hand and costs its manufacturer less than fifty dollars to make. This receiver is capable of reporting the user’s position to within 50m RMS accuracy at any point on the Earth’s surface.  However, GPS suffers from a fundamental limitation: it cannot be used indoors. The microwave signal from the GPS satellites is extremely weak by the time it arrives at the Earth’s surface, and the presence of the leaves of a tree or the roof of a building in the GPS signal path reduce the signal strength to imperceptible levels. Even the use of sophisticated cryogenically cooled receiver electronics cannot recover GPS signals when deep inside a typical reinforced concrete building; the imperceptibly weak GPS signals are overwhelmed by interference from other electronic equipment or more fundamentally by the blackbody radiation of the building itself. The problem is roughly equivalent to trying to see and decode morse code sent by the beam of a flashlight on Earth-- from the surface of Mars. 
+
+\section{Approach}
+The underlying technology we are using is analyzing wireless connection which follows IEEE 802.11 protocol also called WIFI. 
+The fundamental principle is to estimate the distance between 2 nodes of the wifi network by analysing the signal characteristics of the wireless connection. There are many signal properties which can be analyzed to estimate the distance between two nodes but as now we are focussing on RSSI(received signal strength indicator) and path loss exponent. In telecommunications, *RSSI* (Received Signal Strength Indicator) is a measurement of the power present in a received radio signal. And *path loss* (or path attenuation) is the attenuation in power density of an electromagnetic wave as it propagates through space. These parameters will be explained in depth later.
+Ideally, there should be an analytical formula relating distance with these signal parameters and yes such an analytical expression does exist. But the actual measured distance deviates from the value which we get from the above mentioned expression. And the credit goes to the constantly changing environmental characteristics which unfortunately can't be modeled in an analytical expression as an independent variable. In a situation where you can't have an explicit function but you know the variables (parameters) which should be in the function, machine learning comes to help. Now having established that we are going to use learning to model, the first thing we need to have is a database of the values of the parameters and the value of distance which is the target variable which we are intending to predict. 
+We will detail the process of preparing a dataset later. After having the dataset ready, just put on your shoes and march out to train our learning algorithm. Having done the training, the model is ready to spit out values of distance given the required parameters. To get the position, we will be doing trilateration using 3 such systems.
+
+\section{Wi-Fi}
+Wi-Fi or Wireless Fidelity is a technology for wireless local area networking with devices based on the IEEE 802.11 standards. Wi-Fi most commonly uses the 2.4 gigahertz (12 cm) UHF and 5 gigahertz (6 cm) SHF ISM radio bands.
+IEEE 802.11 is a set of media access control (MAC) and physical layer (PHY) specifications for implementing wireless local area network (WLAN) computer communication in the 900 MHz and 2.4, 3.6, 5, and 60 GHz frequency bands. They are created and maintained by the Institute of Electrical and Electronics Engineers (IEEE) LAN/MAN Standards Committee (IEEE 802). 
+The router becomes an informal access point for the Internet, creating an invisible "cloud" of wireless connectivity all around it which is known as a hotspot. Any device under the scope of hotspot can connect to it and form a LAN. So basically, WIFI is wireless form of LAN. More technically, WIFI is known as IEEE 802.11.
+
+The wifi receivers are just decoders and encoders which are capable of encoding and decoding data from electromagnetic( radio) to electrical signals(digital).
+More on frequencies of WIFI: There are two types of Wi-Fi signal, based on the frequencies they use:
+2.4GHz - A lower frequency, this is the more common Wi-Fi technology in use today. Many devices use it, so the signals can become more crowded and interfere with each other. It can pass through walls and windows fairly well.
+5GHz - This higher frequency technology is used by fewer devices, and can sometimes achieve higher speeds because the frequencies are less crowded. It cannot pass through walls and windows as well as the 2.4GHz band signals, so the range of 5GHz technology is often shorter.
+
+\section{RSSI}
+In telecommunications, RSSI (received signal strength indicator) is a measurement of the power present in a received radio signal. RSSI is of no use for a user of hotspot created by the router. But because the signal strength can vary greatly and affect the functionality of networking, IEEE 802.11 devices often make the measurements available to all. 
+The RSSI output is an analog value. It can be sampled by an ADC and the resulting codecs(data) can be used further. The RSSI in 802.11 is an indication of the power level being received.
+But 802.11 standard does not define any equations of power (in watts) and the DC analog value we get. But you can say for sure that if the RSSI value increases, the power increases.In order to calculate probably calibration based on experimental data will help.
+RSSI (signal strength) readings can be affected by reflections, position of objects in the target space, object motion, line of site or not between nodes, number of nodes, presence of other unrelated signals on the allocated frequency band (or stronger ones out of band), directionality (or not) of antennas, front end overload and intermodulation performance, system signal to noise ratio. RSSI distance measurements almost certainly need to be based on multiple signal attempts processed in some way. 
+
+\subsection{RSSI to Distance}
+\subsection{Path Loss estimation techniques}
+\subsection{Fade Margin}
+
+\end{document}
