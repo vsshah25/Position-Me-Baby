@@ -109,10 +109,18 @@ Radio ranging using RSSI generally considers three models:
 
 
 ### NodeMCU's 
+<<<<<<< HEAD
 
 
 
 
+=======
+The technology which we are using for getting the distance is the wifi RSSI(Received Signal Strength Indicator) value. Basically it is a measure in the loss of power when a signal reaches a receiver from a transmitter. For getting the RSSI values, Node MCU(a wifi transceivers) are one of the best options for getting the RSSI value.For the later part I have referred the Node MCU's as simply nodes.
+In our project we are using 4 nodes as reference points at the four corners of a rectangular room(suppose for now). These nodes are sending RSSI values to a central co-ordinator which is also a similar node(this central node can be replaced by the laptop). Now the four nodes at the corners are sending the rssi value and the central one is receiving those values.
+One important thing is that these nodes use UDP protocol for communication.For those who don't know what UDP protocol is they can go through [this](http://www.erg.abdn.ac.uk/users/gorry/course/inet-pages/udp.html).
+**![node_mcu.jpeg](https://github.com/sabSAThai/Position-Me-Baby/blob/master/images/node_mcu.jpeg)**
+
+>>>>>>> 575ee9f0ce77f2eb379816434395ece8143060ba
 ### Dataset
 
 To model the constantly changing environmental characteristics we need to implement machine learning algorithms which need a dataset of various measurable properties of the system. 
@@ -120,6 +128,7 @@ The parameters of dataset are actual distance of object and reference points fro
 
 To create the dataset the actual distance between router and reference points, and between router and object is measured using image processing. The object is moved across the room in discrete steps and at every position its distance and RSSI values are logged.
 
+<<<<<<< HEAD
 The values of RSSI
 
 ### Machine learning algorithm  
