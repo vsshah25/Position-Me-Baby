@@ -1,7 +1,6 @@
 # LOCAL POSITIONING SYSTEM
 
 
-
 ## Abstract 
 
 We present here the detailed design for a WIFI based positioning system called the Local Positioning System (LPS). This system is designed to work indoors, where the microwave radio signals of the Global Positioning System (GPS) cannot be received.Potential applications for this system range from asset tracking, security, and human-computer interface, to robot navigation and the management of services as diverse as medical care and postal delivery. I first present the issues surrounding its conceptual design and then describe in detail the component level implementation of the prototype LPS system, which we have designed and built but not yet tested as a whole.
@@ -19,8 +18,7 @@ We had once worked on a traffic management system for which the position of the 
 
 ### 1.2 GPS Technology 
 
-GPS depends on the use of orbiting space-based atomic clocks, spread spectrum microwave radios, high speed digital signal processing (DSP), and sophisticated mathematics including algorithms that compensate for general relativity. The initial design and deployment of GPS for military use by the Department of
-Defense in the 1980s has led to the availability of inexpensive commercial GPS receivers in the 1990s. In 1998, a consumer GPS receiver fits in the palm of a hand and costs its manufacturer less than fifty dollars to make. This receiver is capable of reporting the user’s position to within 50m RMS accuracy at any point on the Earth’s surface.  However, GPS suffers from a fundamental limitation: it cannot be used indoors. The microwave signal from the GPS satellites is extremely weak by the time it arrives at the Earth’s surface, and the presence of the leaves of a tree or the roof of a building in the GPS signal path reduce the signal strength to imperceptible levels. Even the use of sophisticated cryogenically cooled receiver electronics cannot recover GPS signals when deep inside a typical reinforced concrete building; the imperceptibly weak GPS signals are overwhelmed by interference from other electronic equipment or more fundamentally by the blackbody radiation of the building itself. The problem is roughly equivalent to trying to see and decode morse code sent by the beam of a flashlight on Earth-- from the surface of Mars. 
+GPS depends on the use of orbiting space-based atomic clocks, spread spectrum microwave radios, high speed digital signal processing (DSP), and sophisticated mathematics including algorithms that compensate for general relativity. GPS receiver is capable of reporting the user’s position to within 50m RMS accuracy at any point on the Earth’s surface.  However, GPS suffers from a fundamental limitation: it cannot be used indoors. The microwave signal from the GPS satellites is extremely weak by the time it arrives at the Earth’s surface, and the presence of the leaves of a tree or the roof of a building in the GPS signal path reduce the signal strength to imperceptible levels. Even the use of sophisticated cryogenically cooled receiver electronics cannot recover GPS signals when deep inside a typical reinforced concrete building; the imperceptibly weak GPS signals are overwhelmed by interference from other electronic equipment or more fundamentally by the blackbody radiation of the building itself. The problem is roughly equivalent to trying to see and decode morse code sent by the beam of a flashlight on Earth-- from the surface of Mars. 
 
 
 ## Approach
@@ -110,16 +108,35 @@ Radio ranging using RSSI generally considers three models:
 
 
 
-###NodeMCU's 
+### NodeMCU's 
 
 
 
 
-###Dataset
+### Dataset
 
 To model the constantly changing environmental characteristics we need to implement machine learning algorithms which need a dataset of various measurable properties of the system. 
 The parameters of dataset are actual distance of object and reference points from the router and RSSI value of the connection between object and reference points from the router.
 
 To create the dataset the actual distance between router and reference points, and between router and object is measured using image processing. The object is moved across the room in discrete steps and at every position its distance and RSSI values are logged.
 
-###Machine learning algorithm  
+The values of RSSI
+
+### Machine learning algorithm  
+
+The ML algorithm we are using is Multilayer Perceptron layer Neural Network.
+
+**![ML model](https://github.com/sabSAThai/Position-Me-Baby/blob/master/images/Ml_model.jpg)**
+
+We measure the RSSI values of all the signal connections. What we get is RSSI values of 4 reference points and RSSI of object which we want to localize. 
+To add the information of the analytical expression, using the distance between router and the reference point and its RSSI value, we obtain the value of eta which represents a quadrant of the room.
+
+The model is trained on dataset and saved. After the model has been trained, the model is ready to spit out the value of distance given the inputs. 
+
+As of now, we have been successful in achieving accuracy of 4cm. With some further modifications in the model we are expecting to obtain more accuracy. 
+
+The modifications are as follows: 
+- Apply Principal Component analysis on the dataset to remove redundancy. 
+- Add a feature in the learning algorithm which accounts for the room modeling 
+- Optimize the hardware used in the model 
+- Improve the signal received using hardware and some specific filtering algorithms.
