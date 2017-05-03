@@ -9,7 +9,6 @@ Presented here is the detailed design for a WIFI based positioning system called
 Problem statement aimed to tackle is: 
 **To design a system which is able to return the coordinates of an object in a given map (size ~100 m*100 m) with accuracy in cms. The solution must be inexpensive and easy to calibrate.**
  
-</br>
 
 ##Motivation
     
@@ -74,7 +73,6 @@ where,
 - Pr(d) = received power of the receiver measured at a distance d to the transmitter, which is expressed in dBm.
 - n = path loss exponent 
 
-**Note** : 
 In path loss model, two important parameters are used to characterize environment: path loss exponent n and the received power Pr(d0). Pr(d0) is the measured received power at distance d0 to the transmitter. To characterize the environment for RSSI ranging, received power Pr(d0) is first measured by allocating a receiver d0 apart from the transmitter. d0 is generally fixed at 1m. After Pr(d0) is obtained, the receiver is moved to other locations randomly to measure the received power with the corresponding distance.
 
 There are two methods to estimate the path loss exponent: 
@@ -83,13 +81,10 @@ There are two methods to estimate the path loss exponent:
 
 - Another method is to directly update the environmental parameters using gradient descent technique. In this case, measurement of received power can be done in spread and random style as long as the exact locations in the area are known. This method is called online-update measurement as the environmental parameters such as path loss exponent can be updated continuously regardless of the change of environment.
 
-For further details [click here]("https://github.com/pranav1001/Position-Me-Baby/blob/master/references/reference_articles/path_loss_exponent_estimation.pdf")
-
-</br>
 </br>
 </br>
 
-### Fade Margin : 
+#### Fade Margin 
 Fade margin is the difference in power levels between the actual signal hitting the receiver and the minimum signal needed by the receiver to work. It gives an indication if there are any errors in bit rates.
 The standard formula for calculating minimum theoretical signal level needed by a receiver for a given data rate is -154dBm + 10log10(bit rate).
 
@@ -105,7 +100,7 @@ Radio ranging using RSSI generally considers three models:
 
 
 
-###NodeMCUs 
+### NodeMCUs 
 Node MCU is an open source IOT platform which includes firmware running on the ESP8266 Wi-Fi SoC.It can be configured easily using Arduino IDE to act as a wireless node as well as an access point. Each nodeMCU has an IP address.
 In the project 4 nodes are used as reference points at the four corners of a rectangular room.
 The reference points and object are connected in a star network.Each reference point and the object is programmed to have an ID. They transmit a tuple containing this ID and RSSI value to the router. The coordinator receives all 5 of these tuples in series from the router and sends them to the computer.
