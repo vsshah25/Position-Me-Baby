@@ -104,12 +104,15 @@ Radio ranging using RSSI generally considers three models:
 
 
 
+
 ###NodeMCUs 
 Node MCU is an open source IOT platform which includes firmware running on the ESP8266 Wi-Fi SoC.It can be configured easily using Arduino IDE to act as a wireless node as well as an access point. Each nodeMCU has an IP address.
+In the project 4 nodes are used as reference points at the four corners of a rectangular room.
 The reference points and object are connected in a star network.Each reference point and the object is programmed to have an ID. They transmit a tuple containing this ID and RSSI value to the router. The coordinator receives all 5 of these tuples in series from the router and sends them to the computer.
+These nodes use UDP protocol for communication( for more info click [here](http://www.erg.abdn.ac.uk/users/gorry/course/inet-pages/udp.html).)
+**![node_mcu.jpeg](https://github.com/sabSAThai/Position-Me-Baby/blob/master/images/node_mcu.jpeg)**
 
-
-###Dataset
+### Dataset
 
 To model the constantly changing environmental characteristics we need to implement machine learning algorithms which need a dataset of various measurable properties of the system. 
 The parameters of dataset are actual distance of the object and reference points from the router and RSSI value of the connection between the object and reference points from the router.
@@ -118,11 +121,12 @@ To create the dataset the actual distance between router and reference points, a
 
 ### Machine learning algorithm  
 
-The ML algorithm we are using is Multilayer Perceptron layer Neural Network.
+
+The ML algorithm used is Multilayer Perceptron layer Neural Network.
 
 **![ML model](https://github.com/sabSAThai/Position-Me-Baby/blob/master/images/Ml_model.jpg)**
 
-We measure the RSSI values of all the signal connections. What we get is RSSI values of 4 reference points and RSSI of object which we want to localize. 
+The RSSI values of all five the signal connections is measured.
 To add the information of the analytical expression, using the distance between router and the reference point and its RSSI value, we obtain the value of eta which represents a quadrant of the room.
 
 The model is trained on dataset and saved. After the model has been trained, the model is ready to spit out the value of distance given the inputs. 
@@ -134,3 +138,4 @@ The modifications are as follows:
 - Add a feature in the learning algorithm which accounts for the room modeling 
 - Optimize the hardware used in the model 
 - Improve the signal received using hardware and some specific filtering algorithms. 
+
