@@ -320,7 +320,24 @@ All devices have a routing table, without it they wouldn’t know where to send 
 
 ###Database 
 
-###Machine learning algorithm 
+### Machine learning algorithm  
+
+The ML algorithm we are using is Multilayer Perceptron layer Neural Network.
+
+**![ML model](https://github.com/sabSAThai/Position-Me-Baby/blob/master/images/Ml_model.jpg)**
+
+We measure the RSSI values of all the signal connections. What we get is RSSI values of 4 reference points and RSSI of object which we want to localize. 
+To add the information of the analytical expression, using the distance between router and the reference point and its RSSI value, we obtain the value of eta which represents a quadrant of the room.
+
+The model is trained on dataset and saved. After the model has been trained, the model is ready to spit out the value of distance given the inputs. 
+
+As of now, we have been successful in achieving accuracy of 4cm. With some further modifications in the model we are expecting to obtain more accuracy. 
+
+The modifications are as follows: 
+- Apply Principal Component analysis on the dataset to remove redundancy. 
+- Add a feature in the learning algorithm which accounts for the room modeling 
+- Optimize the hardware used in the model 
+- Improve the signal received using hardware and some specific filtering algorithms.
 
 ###Database
 
