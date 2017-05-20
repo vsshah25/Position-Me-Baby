@@ -7,7 +7,7 @@ from sklearn.externals import joblib
 import matplotlib.pyplot as plt
 import multiprocessing as mp
 import serial 
-
+from sklearn.decomposition import PCA
 # def readata_convertoList():
 
 # 	serialReceiver = serial.Serial(
@@ -42,10 +42,13 @@ def average(rssi_list,n,Id):
 	filtered_array = np.concatenate((per_avg_array,rssi_list_2))
 
 	return filtered_array
-	
-
-
-
+def reduceDimension(input_dataset,n_out_features):
+	n = n_out_features
+	print "Applying PCA. Reducing dimension to ", n   
+	pca = PCA(n_components=n)
+	dataframe = pca.fit_transform(input_dataset)
+	print "returned reduced dataset"  
+	return dataframe
 def compute_eta(rssi_list,x_router,y_router,x_ref,y_ref,Id):
 	
 	rssi_d = np.array(rssi_list)
@@ -76,17 +79,18 @@ def compute_eta(rssi_list,x_router,y_router,x_ref,y_ref,Id):
 	
 	print 'computing eta for reference point', Id	
 	return eta
-
-
-def extract_dist(dataframe,router_pos):
-	x_cor = dataframe['x'].values
-	y_cor = dataframe['y'].values
-	x_router = [router_pos[0]]*len(x_cor)
-	y_router = [router_pos[1]]*len(y_cor)
-
+def extract_dist(router_pos,x_cList,y_cList):
+	x_cor = np.array(x_cList)
+	y_cor = np.array(y_cList)
+	x_router = np.array([router_pos[0]]*len(x_cor))
+	y_router = np.array([router_pos[1]]*len(y_cor))
 	dist = np.sqrt(np.square(x_cor-x_router) + np.square(y_cor-y_router))
-
 	return dist
+
+def get_angle(x_cor,y_cor,len_list):
+	ang = np.arctan(y_cor/x_cor)
+	ang_list = np.array([ang]*len_list)
+	return ang_list
 
 def RSSI_id(dataframe,Nodemcu_id):
 	object_ids = ['obj0','obj1','obj2','obj3','obj4']
@@ -103,7 +107,6 @@ def RSSI_id(dataframe,Nodemcu_id):
 					 rssi_list = rssi_list + list(dataframe[RSSI_columns].loc[i:i][rssi_columns[j]].values)
 		
 	return rssi_list	
-
 def data_cleaning(dataframe):
 	# for i in range(len(dataframe)):
 
@@ -152,16 +155,13 @@ def data_cleaning(dataframe):
 
 	print "dataset filtered"
 	return dataframe
-
-
-
 	
 def train(input):
 	Datafile = input['Datafile']                    #input the datafile
 	data = pd.read_csv(Datafile)					#load the datafile and create a dataframe			
 	data = data_cleaning(data)                      #Filter out garbage data           	
 	data.to_csv('cleaned_dataset.csv')
-	
+
 	train_dataframe = pd.DataFrame()
 	Tvar_dataframe = pd.DataFrame()
 	
@@ -172,7 +172,7 @@ def train(input):
 
 
 	x_router = [router_pos[0]]*len(train_dataframe)
-	y_router = [router_pos[0]]*len(train_dataframe)
+	y_router = [router_pos[1]]*len(train_dataframe)
 
 	x_ref = [228,228,-186.8,-186.8]
 	y_ref = [-147.6,137.6,-147.6,137.6]
@@ -193,21 +193,20 @@ def train(input):
 	train_dataframe['eta_4'] =  compute_eta( rssi_list_4, x_router,y_router,x_ref[3],y_ref[3],4)
 
 	
-	meas_dist = extract_dist(data,router_pos)
+	# print train_dataframe.head()
+	# print train_dataframe.loc[:,['dist_ref1','dist_ref2']].head()
+	#print reduceDimension(np.array(train_dataframe.loc[:,['dist_ref1','dist_ref2','dist_ref3','dist_ref4']]), 2)
+		
+	meas_dist = extract_dist(router_pos, data['x'].values,data['y'].values)
 	meas_dist = meas_dist[0:len(train_dataframe)]
 	Tvar_dataframe['distance'] = meas_dist
 	Tvar_dataframe = np.array(Tvar_dataframe)
 	Tvar_dataframe = np.ravel(Tvar_dataframe)
 
 
-	# training_data = train_dataframe 
-	# training_data['distance'] = Tvar_dataframe
-	print 'logging training data'
-	train_dataframe.to_csv('training_data.csv')
-	print 'training data saved in training_data.csv'
-	
-	#print 'training_data',training_data 
-	#print 'train_dataframe', train_dataframe
+	# print 'logging training data...'
+	# train_dataframe.to_csv('training_data.csv')
+	# print 'training data saved in training_data.csv'
 	
 	print 'normalizing data... '	
 	scaler = StandardScaler()  
@@ -215,17 +214,43 @@ def train(input):
 	train_dataframe = scaler.transform(train_dataframe) 
 	print 'Normalization done'
 
-	print 'logging normalized data'
+	print 'logging normalized data...'
 	normalized_data = pd.DataFrame(train_dataframe)
 	normalized_data['distance'] = Tvar_dataframe
 	normalized_data.to_csv('normalized_trainingData.csv')
 	print 'normalized data saved in normalized_trainingData.csv'
 	
+	train_dataframe = pd.DataFrame(train_dataframe)
+	ref_distFrame = pd.DataFrame()
+	ref_distFrame['dist_ref1'] =  extract_dist(router_pos,[x_ref[0]]*len(train_dataframe),[y_ref[0]]*len(train_dataframe))
+	ref_distFrame['dist_ref2'] =  extract_dist(router_pos,[x_ref[1]]*len(train_dataframe),[y_ref[1]]*len(train_dataframe))
+	ref_distFrame['dist_ref3'] =  extract_dist(router_pos,[x_ref[2]]*len(train_dataframe),[y_ref[2]]*len(train_dataframe))
+	ref_distFrame['dist_ref4'] =  extract_dist(router_pos,[x_ref[3]]*len(train_dataframe),[y_ref[3]]*len(train_dataframe))
+
+	train_dataframe['dist_ref1'] = ref_distFrame['dist_ref1']/ref_distFrame['dist_ref1']
+	train_dataframe['dist_ref2'] = ref_distFrame['dist_ref2']/ref_distFrame['dist_ref1']
+	train_dataframe['dist_ref3'] = ref_distFrame['dist_ref3']/ref_distFrame['dist_ref1']
+	train_dataframe['dist_ref4'] = ref_distFrame['dist_ref4']/ref_distFrame['dist_ref1']
+
+	train_dataframe['ang_ref1'] = get_angle(x_ref[0],y_ref[0],len(train_dataframe))
+	train_dataframe['ang_ref2'] = get_angle(x_ref[1],y_ref[1],len(train_dataframe))
+	train_dataframe['ang_ref3'] = get_angle(x_ref[2],y_ref[2],len(train_dataframe))
+	train_dataframe['ang_ref4'] = get_angle(x_ref[3],y_ref[3],len(train_dataframe))
+
 	
-	print Tvar_dataframe
+	print 'logging training data...'
+	train_dataframe.to_csv('training_data.csv')
+	print 'training data saved in training_data.csv'
+
+	print "training dataset"
+	print train_dataframe
+
+	print "Target variable "	
+	print  Tvar_dataframe
+
 
 	reg = MLPRegressor(solver='lbfgs')
-	print 'training neural net'
+	print 'training neural net....'
 	reg.fit(train_dataframe, Tvar_dataframe)
 	joblib.dump(reg, 'model_pos1.pkl')
 	print 'neural net trained. Model saved in a pickle file as an object'
@@ -265,9 +290,8 @@ def predict(input_data):
 	est_distance = reg.predict(input_rssi_data)
 	return est_distance
 
-
-train({"Datafile":  "/media/pranav/Common_space1/projects/Local_positioning_system/ML and database/database/pos1.csv"})
-#train({"Datafile":"/media/pranav/Common_space1/projects/Local_positioning_system/ML and database/database/test_database/size500Dataset.csv"})
+#train({"Datafile":  "/media/pranav/Common_space2/projects/Local_positioning_system/ML and database/database/pos1.csv"})
+train({"Datafile":"/media/pranav/Common_space2/projects/Local_positioning_system/ML and database/database/test_database/size500Dataset.csv"})
 #print predict([65,64,81,72,64])
 
 
