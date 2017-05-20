@@ -3,7 +3,7 @@ int motor1_b = 5;
 int motor2_f = 9;
 int motor2_b = 10;
 
-int iterations = 100;
+int iterations = 5;
 
 void setup()
 {
@@ -14,17 +14,19 @@ void setup()
 }
 
 void loop()
+
 {
+  /*
 	for(int i=0;i<iterations;i++){
-		int PWM = 50;
+		int PWM = 100;
 		int Time = 200;
 		move_forward(PWM,Time);
 		delay(1000);
 	}
-	
- 	int PWM = 50;
-	int Time = 200;
-	int rotation_time = 100;
+	*/
+ 	int PWM = 200;
+	int Time = 1000;
+	int rotation_time = 300;
 
 	rotate_90(rotation_time);
 	move_forward(PWM,Time);
